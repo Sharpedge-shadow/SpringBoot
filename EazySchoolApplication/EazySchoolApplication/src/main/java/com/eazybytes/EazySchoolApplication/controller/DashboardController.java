@@ -1,5 +1,5 @@
 package com.eazybytes.EazySchoolApplication.controller;
-
+//commit
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

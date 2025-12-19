@@ -1,5 +1,5 @@
 package com.eazybytes.EazySchoolApplication.constants;
-
+//commit
 public class EazySchoolConstants {
     public static final String ANONYMOUS = "Anonymous";
     public static final String OPEN = "Open";

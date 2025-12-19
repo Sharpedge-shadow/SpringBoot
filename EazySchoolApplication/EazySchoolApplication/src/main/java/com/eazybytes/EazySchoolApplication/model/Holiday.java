@@ -1,5 +1,5 @@
 package com.eazybytes.EazySchoolApplication.model;
-
+//commit
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

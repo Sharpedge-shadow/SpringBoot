@@ -1,5 +1,5 @@
 package com.eazybytes.EazySchoolApplication.model;
-
+//commit
 import lombok.Data;
 
 import java.time.LocalDateTime;

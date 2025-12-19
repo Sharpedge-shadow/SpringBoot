@@ -1,6 +1,6 @@
 package com.eazybytes.EazySchoolApplication.config;
 
-
+//commit
 import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

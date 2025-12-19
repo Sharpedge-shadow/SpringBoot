@@ -1,5 +1,5 @@
 package com.eazybytes.EazySchoolApplication.rommappers;
-
+//commit
 import com.eazybytes.EazySchoolApplication.model.Contact;
 import org.springframework.jdbc.core.RowMapper;
 
