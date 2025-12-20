@@ -18,7 +18,10 @@ public class ProjectSecurityConfig {
     //csrf protection work for put ,put and delete not for get mapping
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()))
+
+      //  http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()))
+       //ignoringRequestMatchers(PathRequest.toH2Console()) not needed as connecting with mysql not h2 database
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg"))
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/dashboard").authenticated()
                                 .requestMatchers("/displayMessages").hasRole("ADMIN")
                                 .requestMatchers("/closeMsg/**").hasRole("ADMIN").
@@ -39,8 +42,11 @@ public class ProjectSecurityConfig {
                 .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true).permitAll())
                 .httpBasic(Customizer.withDefaults());
-        http.headers(headersConfigurer -> headersConfigurer
-                .frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()));
+     //   not needed as connecting with mysql not h2 database
+      //  http.headers(headersConfigurer -> headersConfigurer
+       //         .frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()));
+
+
         return http.build();
     }
 

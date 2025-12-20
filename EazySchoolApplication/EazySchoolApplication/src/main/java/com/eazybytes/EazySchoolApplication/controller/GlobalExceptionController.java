@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 exceptions across the whole application in one global handling component. It can be viewed
 as an interceptor of exceptions thrown by methods annotated with @RequestMapping and similar.
 * */
-@Slf4j
+//@Slf4j
 @ControllerAdvice
 public class GlobalExceptionController {
 
