@@ -33,8 +33,8 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/about").permitAll()
                         .requestMatchers("/assets/**").permitAll().
                         requestMatchers("/login").permitAll().
-                        requestMatchers("/logout").permitAll().
-                        requestMatchers(PathRequest.toH2Console()).permitAll()
+                        requestMatchers("/logout").permitAll()
+//                        requestMatchers(PathRequest.toH2Console()).permitAll()
 
                 )
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Controller
@@ -30,12 +31,14 @@ public class HolidaysController {
                                   @RequestParam(required = false) boolean federal,Model model) {
         model.addAttribute("festival",festival);
         model.addAttribute("federal",federal);
-        List<Holiday> holidays = holidaysRepository.findAllHolidays();
+        Iterable<Holiday> holidays = holidaysRepository.findAll();
+        List<Holiday> holidayList = StreamSupport
+                .stream(holidays.spliterator(), false)
+                .collect(Collectors.toList());
         Holiday.Type[] types = Holiday.Type.values();
         for (Holiday.Type type : types) {
             model.addAttribute(type.toString(),
-                    (holidays.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
-
+                    (holidayList.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
         }
         return "holidays.html";
     }
@@ -50,13 +53,15 @@ public class HolidaysController {
         }else if(null != display && display.equals("festival")){
             model.addAttribute("festival",true);
         }
-        List<Holiday> holidays = holidaysRepository.findAllHolidays();
+        Iterable<Holiday> holidays = holidaysRepository.findAll();
+        List<Holiday> holidayList = StreamSupport
+                .stream(holidays.spliterator(), false)
+                .collect(Collectors.toList());
         Holiday.Type[] types = Holiday.Type.values();
         for (Holiday.Type type : types) {
             model.addAttribute(type.toString(),
-                    (holidays.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
+                    (holidayList.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
         }
-        log.info(String.valueOf(model));
         return "holidays.html";
     }
 }
