@@ -8,6 +8,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -21,19 +23,22 @@ public class ProjectSecurityConfig {
 
       //  http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()))
        //ignoringRequestMatchers(PathRequest.toH2Console()) not needed as connecting with mysql not h2 database
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg"))
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers("/public/**"))
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/dashboard").authenticated()
                                 .requestMatchers("/displayMessages").hasRole("ADMIN")
                                 .requestMatchers("/closeMsg/**").hasRole("ADMIN").
                         requestMatchers("/", "/home").permitAll().
                         requestMatchers("/holidays/**").permitAll()
                         .requestMatchers("/contact").permitAll()
+                                .requestMatchers("/displayProfile").authenticated()
+                                .requestMatchers("/updateProfile").authenticated()
                         .requestMatchers("/saveMsg").permitAll()
                         .requestMatchers("/courses").permitAll()
                         .requestMatchers("/about").permitAll()
                         .requestMatchers("/assets/**").permitAll().
                         requestMatchers("/login").permitAll().
-                        requestMatchers("/logout").permitAll()
+                        requestMatchers("/logout").permitAll().
+                                requestMatchers("/public/**").permitAll()
 //                        requestMatchers(PathRequest.toH2Console()).permitAll()
 
                 )
@@ -50,14 +55,20 @@ public class ProjectSecurityConfig {
         return http.build();
     }
 
+    //not needed as implement our own authentication provider which check the authentication from database
+//
+//    @Bean
+//    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
+//        UserDetails user = User.withDefaultPasswordEncoder()
+//                .username("user").password("12345").roles("USER").build();
+//
+//        UserDetails admin = User.withDefaultPasswordEncoder()
+//                .username("admin").password("54321").roles("ADMIN","USER").build();
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
+//
     @Bean
-    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user").password("12345").roles("USER").build();
-
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin").password("54321").roles("ADMIN","USER").build();
-        return new InMemoryUserDetailsManager(user, admin);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
-
 }
