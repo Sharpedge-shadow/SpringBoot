@@ -23,15 +23,20 @@ public class ProjectSecurityConfig {
 
       //  http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()))
        //ignoringRequestMatchers(PathRequest.toH2Console()) not needed as connecting with mysql not h2 database
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers("/public/**"))
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").
+                        ignoringRequestMatchers("/public/**").
+                        ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/dashboard").authenticated()
-                                .requestMatchers("/displayMessages").hasRole("ADMIN")
+                                .requestMatchers("/displayMessages/**").hasRole("ADMIN")
                                 .requestMatchers("/closeMsg/**").hasRole("ADMIN").
+                        requestMatchers("/admin/**").hasRole("ADMIN").
+                        requestMatchers("/api/**").authenticated().
                         requestMatchers("/", "/home").permitAll().
                         requestMatchers("/holidays/**").permitAll()
                         .requestMatchers("/contact").permitAll()
                                 .requestMatchers("/displayProfile").authenticated()
-                                .requestMatchers("/updateProfile").authenticated()
+                                .requestMatchers("/updateProfile").authenticated().
+                                requestMatchers("/student/**").authenticated()
                         .requestMatchers("/saveMsg").permitAll()
                         .requestMatchers("/courses").permitAll()
                         .requestMatchers("/about").permitAll()

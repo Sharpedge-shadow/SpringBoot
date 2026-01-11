@@ -2,11 +2,19 @@ package com.eazybytes.EazySchoolApplication.repository;
 //commit
 import com.eazybytes.EazySchoolApplication.model.Contact;
 import com.eazybytes.EazySchoolApplication.rommappers.ContactRowMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,7 +28,7 @@ type to the Spring context and indicate that given Bean is used to perform
 DB related operations and
 * */
 @Repository
-public interface ContactRepository extends CrudRepository<Contact,Integer> {
+public interface ContactRepository extends JpaRepository<Contact,Integer> {
 
 
     // for spring data JDBC---------------------------------------------------------Start__-------
@@ -69,5 +77,34 @@ public interface ContactRepository extends CrudRepository<Contact,Integer> {
     //this is called Derived Named Query methods
     List<Contact> findByStatus(String status);
 
+
+    //JPQL Query Languange
+    @Query("SELECT c FROM Contact c WHERE c.status = :status")
+    //@Query("SELECT c FROM Contact c WHERE c.status = ?1")
+
+    //Native SQL
+        //@Query(value = "SELECT * FROM contact_msg c WHERE c.status = :status",nativeQuery = true)
+    Page<Contact> findByStatus(String status, Pageable pageable);
+
+    //Update Query
+    @Transactional
+    @Modifying
+    @Query("UPDATE Contact c SET c.status = ?1 WHERE c.contactId = ?2")
+    int updateStatusById(String status, int id);
+
+    Page<Contact> findOpenMsgs(@Param("status") String status, Pageable pageable);
+
+    @Transactional
+    @Modifying
+    int updateMsgStatus(String status, int id);
+
+    //Native Query
+    @Query(nativeQuery = true)
+    Page<Contact> findOpenMsgsNative(@Param("status") String status, Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true)
+    int updateMsgStatusNative(String status, int id);
 
 }
