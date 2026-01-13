@@ -50,6 +50,7 @@ public class ProfileController {
                                 HttpSession session)
     {
         if(errors.hasErrors()){
+
             return "profile.html";
         }
         Person person = (Person) session.getAttribute("loggedInPerson");
