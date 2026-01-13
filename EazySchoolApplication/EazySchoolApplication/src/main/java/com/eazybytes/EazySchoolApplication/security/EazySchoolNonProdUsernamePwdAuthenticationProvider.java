@@ -1,5 +1,6 @@
 package com.eazybytes.EazySchoolApplication.security;
 
+
 import com.eazybytes.EazySchoolApplication.model.Person;
 import com.eazybytes.EazySchoolApplication.model.Roles;
 import com.eazybytes.EazySchoolApplication.repository.PersonRepository;
@@ -19,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile("prod")
-public class EazySchoolUsernamePwdAuthenticationProvider
+@Profile("!prod")
+public class EazySchoolNonProdUsernamePwdAuthenticationProvider
         implements AuthenticationProvider
 {
     @Autowired
@@ -35,9 +36,7 @@ public class EazySchoolUsernamePwdAuthenticationProvider
         String email = authentication.getName();
         String pwd = authentication.getCredentials().toString();
         Person person = personRepository.readByEmail(email);
-        if(null != person && person.getPersonId()>0 &&
-               // pwd.equals(person.getPwd())){
-            passwordEncoder.matches(pwd,person.getPwd())){
+        if(null != person && person.getPersonId()>0){
             return new UsernamePasswordAuthenticationToken(
                     email, null, getGrantedAuthorities(person.getRoles()));
         }else{
@@ -55,4 +54,5 @@ public class EazySchoolUsernamePwdAuthenticationProvider
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
+
 }

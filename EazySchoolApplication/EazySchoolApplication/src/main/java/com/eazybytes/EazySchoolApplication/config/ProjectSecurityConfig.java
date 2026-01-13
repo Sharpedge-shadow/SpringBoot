@@ -21,46 +21,84 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-      //  http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()))
-       //ignoringRequestMatchers(PathRequest.toH2Console()) not needed as connecting with mysql not h2 database
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").
-                        ignoringRequestMatchers("/public/**").
-                        ignoringRequestMatchers("/api/**"))
+//      //  http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()))
+//       //ignoringRequestMatchers(PathRequest.toH2Console()) not needed as connecting with mysql not h2 database
+//        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").
+//                        ignoringRequestMatchers("/public/**").
+//                        ignoringRequestMatchers("/api/**")
+//                        .ignoringRequestMatchers("/data-api/**"))
+//                .authorizeHttpRequests((requests) -> requests.requestMatchers("/dashboard").authenticated()
+//                                .requestMatchers("/displayMessages/**").hasRole("ADMIN")
+//                                .requestMatchers("/closeMsg/**").hasRole("ADMIN").
+//                        requestMatchers("/admin/**").hasRole("ADMIN").
+//                        requestMatchers("/api/**").authenticated().
+//                        requestMatchers( "/home").permitAll().
+//                        requestMatchers("/holidays/**").permitAll()
+//                         .requestMatchers("/profile/**").permitAll()
+//                                .requestMatchers("/courseses/**").permitAll()
+//                                .requestMatchers("/contacts/**").permitAll()
+//                                .requestMatchers("/data-api/**").permitAll()
+//                        .requestMatchers("/contact").permitAll()
+//                                .requestMatchers("/displayProfile").authenticated()
+//                                .requestMatchers("/updateProfile").authenticated().
+//                                requestMatchers("/student/**").authenticated()
+//                        .requestMatchers("/saveMsg").permitAll()
+//                        .requestMatchers("/courses").permitAll()
+//                        .requestMatchers("/about").permitAll()
+//                        .requestMatchers("/assets/**").permitAll().
+//                        requestMatchers("/login").permitAll().
+//                        requestMatchers("/logout").permitAll().
+//                                requestMatchers("/public/**").permitAll()
+////                        requestMatchers(PathRequest.toH2Console()).permitAll()
+//
+//                )
+//                .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
+//                        .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
+//                .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
+//                        .invalidateHttpSession(true).permitAll())
+//                .httpBasic(Customizer.withDefaults());
+//     //   not needed as connecting with mysql not h2 database
+//      //  http.headers(headersConfigurer -> headersConfigurer
+//       //         .frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()));
+
+
+        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers("/public/**")
+                        .ignoringRequestMatchers("/api/**").ignoringRequestMatchers("/data-api/**")
+                        .ignoringRequestMatchers("/eazyschool/actuator/**"))
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/dashboard").authenticated()
-                                .requestMatchers("/displayMessages/**").hasRole("ADMIN")
-                                .requestMatchers("/closeMsg/**").hasRole("ADMIN").
-                        requestMatchers("/admin/**").hasRole("ADMIN").
-                        requestMatchers("/api/**").authenticated().
-                        requestMatchers("/", "/home").permitAll().
-                        requestMatchers("/holidays/**").permitAll()
+                        .requestMatchers("/displayMessages/**").hasRole("ADMIN")
+                        .requestMatchers("/closeMsg/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/eazyschool/actuator/**").hasRole("ADMIN")
+                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/data-api/**").authenticated()
+                        .requestMatchers("/displayProfile").authenticated()
+                        .requestMatchers("/updateProfile").authenticated()
+                        .requestMatchers("/student/**").hasRole("STUDENT")
+//                        .requestMatchers("/courseses/**").permitAll()
+//                        .requestMatchers("/contacts/**").permitAll()
+//                        .requestMatchers("/profile/**").permitAll()
+                         .requestMatchers("/data-api/**").authenticated()
+                        .requestMatchers("/", "/home").permitAll()
+                        .requestMatchers("/holidays/**").permitAll()
                         .requestMatchers("/contact").permitAll()
-                                .requestMatchers("/displayProfile").authenticated()
-                                .requestMatchers("/updateProfile").authenticated().
-                                requestMatchers("/student/**").authenticated()
                         .requestMatchers("/saveMsg").permitAll()
                         .requestMatchers("/courses").permitAll()
                         .requestMatchers("/about").permitAll()
-                        .requestMatchers("/assets/**").permitAll().
-                        requestMatchers("/login").permitAll().
-                        requestMatchers("/logout").permitAll().
-                                requestMatchers("/public/**").permitAll()
-//                        requestMatchers(PathRequest.toH2Console()).permitAll()
-
-                )
+                        .requestMatchers("/assets/**").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/logout").permitAll()
+                        .requestMatchers("/public/**").permitAll())
                 .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login")
                         .defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
                 .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true).permitAll())
                 .httpBasic(Customizer.withDefaults());
-     //   not needed as connecting with mysql not h2 database
-      //  http.headers(headersConfigurer -> headersConfigurer
-       //         .frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()));
-
 
         return http.build();
     }
 
-    //not needed as implement our own authentication provider which check the authentication from database
+//not needed as implement our own authentication provider which check the authentication from database
 //
 //    @Bean
 //    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
